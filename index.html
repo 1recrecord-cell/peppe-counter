@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02080d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>PEPPE COUNTER</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#000;font-family:Arial,Helvetica,sans-serif}
+.app{width:min(100vw,430px);margin:auto;background:#02080d}
+.poster{position:relative;width:100%;aspect-ratio:1024/1536;background:url("background.jpg") center/100% 100% no-repeat;overflow:hidden}
+
+/* Live countdown: deliberately kept in its own clear zone above the red comment band. */
+.countMask{
+ position:absolute;left:67.5%;top:25.2%;width:29.5%;height:12.5%;z-index:8;
+ background:radial-gradient(ellipse at center,rgba(4,18,28,.97) 0%,rgba(4,18,28,.88) 68%,rgba(4,18,28,0) 100%);
+}
+.count{
+ position:absolute;left:68.5%;top:25.8%;width:27.0%;height:10.8%;z-index:9;color:#f4eee7;
+ display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+}
+.ato{font-size:clamp(10px,3vw,15px);margin-left:2px;margin-bottom:2px}
+.dayline{display:flex;align-items:flex-end;justify-content:flex-start;gap:6px;white-space:nowrap;width:100%}
+.days{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(56px,16.5vw,88px);line-height:.78;letter-spacing:-.05em}
+.unit{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(10px,2.8vw,15px);line-height:1;margin-bottom:7px;letter-spacing:.06em}
+
+/* Replace the old Japanese catch copy cleanly. */
+.catchMask{
+ position:absolute;left:9.7%;top:25.0%;width:37%;height:6.5%;z-index:8;
+ background:linear-gradient(90deg,rgba(4,18,28,.98) 0%,rgba(4,18,28,.88) 78%,rgba(4,18,28,0) 100%);
+}
+.catch{
+ position:absolute;left:10.2%;top:26.1%;z-index:9;color:#f1eee9;
+ font-size:clamp(12px,3.8vw,18px);font-weight:700;letter-spacing:.06em;
+}
+
+/* Functional latest comment overlay */
+.latestMask{position:absolute;left:10%;top:64.3%;width:85%;height:10.5%;z-index:10;background:#8f251f}
+.latest{position:absolute;left:12%;top:65%;width:81%;height:8.8%;z-index:11;color:#f3ede5}
+.lt{display:flex;justify-content:space-between;font-size:clamp(6px,1.9vw,9px);font-weight:800}
+.ln{font-size:clamp(9px,2.8vw,13px);font-weight:900;margin-top:5px}
+.lc{font-size:clamp(18px,5.5vw,29px);font-weight:700;line-height:1.08;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Latest 3 comments */
+.listMask{position:absolute;left:10%;top:76%;width:85%;height:14.6%;z-index:10;background:#02080d}
+.list{position:absolute;left:10.5%;top:76.15%;width:84%;height:14.3%;z-index:11;color:#eee}
+.row{height:33.33%;display:grid;grid-template-columns:12% 27% 1fr;align-items:center;border-top:1px solid #5556;gap:5px}
+.idx{font-family:Impact,sans-serif;font-size:clamp(19px,6vw,31px);color:#c5362b;text-align:center}
+.name{font-size:clamp(7px,2.2vw,10px);font-weight:800;line-height:1.25}
+.text{font-size:clamp(7px,2.3vw,10px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Input */
+.formMask{position:absolute;left:10%;top:91.5%;width:85%;height:6.5%;z-index:10;background:#07131b}
+.form{position:absolute;left:20.5%;top:92%;width:72.2%;height:5.2%;z-index:11;display:grid;grid-template-columns:51% 31% 16%;gap:1%}
+textarea,input{width:100%;height:100%;resize:none;border:1px solid #777;background:#0d1b24;color:#eee;padding:7px;font-size:clamp(8px,2.4vw,11px)}
+button{border:0;background:#b93329;color:#fff;font-weight:900;font-size:clamp(8px,2.5vw,12px)}
+</style>
+</head>
+<body>
+<div class="app"><div class="poster">
+  <div class="catchMask"></div><div class="catch">ようこそ、ペッペ。</div>
+
+  <div class="countMask"></div>
+  <div class="count">
+    <div class="ato">あと</div>
+    <div class="dayline"><div id="days" class="days">---</div><div class="unit">DAYS</div></div>
+  </div>
+
+  <div class="latestMask"></div>
+  <div class="latest">
+    <div class="lt"><span>LATEST COMMENT</span><span id="time">LATEST</span></div>
+    <div id="lname" class="ln">FROM RIKU（パパ）</div>
+    <div id="ltext" class="lc">ようこそ、ペッペ。</div>
+  </div>
+
+  <div class="listMask"></div><div id="list" class="list"></div>
+
+  <div class="formMask"></div>
+  <div class="form">
+    <textarea id="comment" placeholder="コメントを入力"></textarea>
+    <input id="name" placeholder="お名前">
+    <button id="post">POST →</button>
+  </div>
+</div></div>
+
+<script>
+const $=x=>document.getElementById(x), due=new Date("2026-11-26T00:00:00+09:00");
+function tick(){const d=due-new Date();$("days").textContent=d<=0?0:Math.ceil(d/86400000)}
+tick(); setInterval(tick,60000);
+
+let cs=JSON.parse(localStorage.getItem("peppe_adjusted_comments")||"null")||[
+ {name:"RIKU（パパ）",text:"ようこそ、ペッペ。",time:""},
+ {name:"MOMOKA（ママ）",text:"今日も元気にお腹の中にいてくれてありがとう♡",time:""},
+ {name:"おばあちゃん",text:"早く抱っこしたいなぁ〜楽しみにしてるよ〜！",time:""}
+];
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function render(){
+ const c=cs[0];
+ $("lname").textContent="FROM "+c.name;
+ $("ltext").textContent=c.text;
+ $("time").textContent=c.time||"LATEST";
+ $("list").innerHTML=cs.slice(0,3).map((c,i)=>`<div class="row"><div class="idx">${String(i+1).padStart(2,"0")}</div><div class="name">FROM<br>${esc(c.name)}</div><div class="text">${esc(c.text)}</div></div>`).join("");
+}
+$("post").onclick=()=>{
+ const name=$("name").value.trim()||"FAMILY", text=$("comment").value.trim();
+ if(!text)return;
+ const time=new Date().toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+ cs.unshift({name,text,time}); cs=cs.slice(0,50);
+ localStorage.setItem("peppe_adjusted_comments",JSON.stringify(cs));
+ $("name").value=""; $("comment").value=""; render();
+};
+render();
+</script>
+</body></html>
