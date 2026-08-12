@@ -1,116 +1,26 @@
 <!doctype html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#02080d">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>PEPPE COUNTER</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><meta name="theme-color" content="#02080d"><meta name="apple-mobile-web-app-capable" content="yes"><title>PEPPE COUNTER</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;background:#000;font-family:Arial,Helvetica,sans-serif}
-.app{width:min(100vw,430px);margin:auto;background:#02080d}
-.poster{position:relative;width:100%;aspect-ratio:1024/1536;background:url("background.jpg") center/100% 100% no-repeat;overflow:hidden}
-
-/* Live countdown: deliberately kept in its own clear zone above the red comment band. */
-.countMask{
- position:absolute;left:67.5%;top:25.2%;width:29.5%;height:12.5%;z-index:8;
- background:radial-gradient(ellipse at center,rgba(4,18,28,.97) 0%,rgba(4,18,28,.88) 68%,rgba(4,18,28,0) 100%);
-}
-.count{
- position:absolute;left:68.5%;top:25.8%;width:27.0%;height:10.8%;z-index:9;color:#f4eee7;
- display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
-}
-.ato{font-size:clamp(10px,3vw,15px);margin-left:2px;margin-bottom:2px}
-.dayline{display:flex;align-items:flex-end;justify-content:flex-start;gap:6px;white-space:nowrap;width:100%}
-.days{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(56px,16.5vw,88px);line-height:.78;letter-spacing:-.05em}
-.unit{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(10px,2.8vw,15px);line-height:1;margin-bottom:7px;letter-spacing:.06em}
-
-/* Replace the old Japanese catch copy cleanly. */
-.catchMask{
- position:absolute;left:9.7%;top:25.0%;width:37%;height:6.5%;z-index:8;
- background:linear-gradient(90deg,rgba(4,18,28,.98) 0%,rgba(4,18,28,.88) 78%,rgba(4,18,28,0) 100%);
-}
-.catch{
- position:absolute;left:10.2%;top:26.1%;z-index:9;color:#f1eee9;
- font-size:clamp(12px,3.8vw,18px);font-weight:700;letter-spacing:.06em;
-}
-
-/* Functional latest comment overlay */
-.latestMask{position:absolute;left:10%;top:64.3%;width:85%;height:10.5%;z-index:10;background:#8f251f}
-.latest{position:absolute;left:12%;top:65%;width:81%;height:8.8%;z-index:11;color:#f3ede5}
-.lt{display:flex;justify-content:space-between;font-size:clamp(6px,1.9vw,9px);font-weight:800}
-.ln{font-size:clamp(9px,2.8vw,13px);font-weight:900;margin-top:5px}
-.lc{font-size:clamp(18px,5.5vw,29px);font-weight:700;line-height:1.08;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* Latest 3 comments */
-.listMask{position:absolute;left:10%;top:76%;width:85%;height:14.6%;z-index:10;background:#02080d}
-.list{position:absolute;left:10.5%;top:76.15%;width:84%;height:14.3%;z-index:11;color:#eee}
-.row{height:33.33%;display:grid;grid-template-columns:12% 27% 1fr;align-items:center;border-top:1px solid #5556;gap:5px}
-.idx{font-family:Impact,sans-serif;font-size:clamp(19px,6vw,31px);color:#c5362b;text-align:center}
-.name{font-size:clamp(7px,2.2vw,10px);font-weight:800;line-height:1.25}
-.text{font-size:clamp(7px,2.3vw,10px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* Input */
-.formMask{position:absolute;left:10%;top:91.5%;width:85%;height:6.5%;z-index:10;background:#07131b}
-.form{position:absolute;left:20.5%;top:92%;width:72.2%;height:5.2%;z-index:11;display:grid;grid-template-columns:51% 31% 16%;gap:1%}
-textarea,input{width:100%;height:100%;resize:none;border:1px solid #777;background:#0d1b24;color:#eee;padding:7px;font-size:clamp(8px,2.4vw,11px)}
-button{border:0;background:#b93329;color:#fff;font-weight:900;font-size:clamp(8px,2.5vw,12px)}
-</style>
-</head>
-<body>
-<div class="app"><div class="poster">
-  <div class="catchMask"></div><div class="catch">ようこそ、ペッペ。</div>
-
-  <div class="countMask"></div>
-  <div class="count">
-    <div class="ato">あと</div>
-    <div class="dayline"><div id="days" class="days">---</div><div class="unit">DAYS</div></div>
-  </div>
-
-  <div class="latestMask"></div>
-  <div class="latest">
-    <div class="lt"><span>LATEST COMMENT</span><span id="time">LATEST</span></div>
-    <div id="lname" class="ln">FROM RIKU（パパ）</div>
-    <div id="ltext" class="lc">ようこそ、ペッペ。</div>
-  </div>
-
-  <div class="listMask"></div><div id="list" class="list"></div>
-
-  <div class="formMask"></div>
-  <div class="form">
-    <textarea id="comment" placeholder="コメントを入力"></textarea>
-    <input id="name" placeholder="お名前">
-    <button id="post">POST →</button>
-  </div>
-</div></div>
-
+*{box-sizing:border-box}html,body{margin:0;background:#000;font-family:Arial,Helvetica,sans-serif}.app{width:min(100vw,430px);margin:auto;background:#02080d}.poster{position:relative;width:100%;aspect-ratio:1024/1536;background:url('background.jpg') center/100% 100% no-repeat;overflow:hidden}
+/* ultrasound / echo-photo atmosphere */
+.poster:before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 58% 39%,rgba(210,235,238,.10),transparent 32%),radial-gradient(ellipse at 55% 42%,transparent 18%,rgba(0,8,12,.12) 48%,rgba(0,0,0,.30) 100%),repeating-linear-gradient(0deg,rgba(220,245,245,.022) 0 1px,transparent 1px 4px);mix-blend-mode:screen;animation:echoPulse 5.5s ease-in-out infinite}.poster:after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(105deg,transparent 0 44%,rgba(220,245,245,.07) 49%,transparent 54%);animation:scan 7s linear infinite}
+@keyframes echoPulse{50%{opacity:.55;filter:contrast(1.1)}}@keyframes scan{0%{transform:translateX(-55%)}100%{transform:translateX(55%)}}
+/* floating-girl illusion: duplicate only central area, gently drift it */
+.girlFloat{position:absolute;left:21%;top:22%;width:59%;height:39%;z-index:5;pointer-events:none;background:url('background.jpg') center/430px 645px no-repeat;background-position:50% 39%;clip-path:ellipse(45% 47% at 54% 50%);filter:drop-shadow(0 0 12px rgba(220,245,255,.16));animation:floatGirl 5.8s ease-in-out infinite alternate}
+@keyframes floatGirl{0%{transform:translateY(-2px) rotate(-.15deg)}100%{transform:translateY(7px) rotate(.18deg)}}
+.countMask{position:absolute;left:67.5%;top:25.2%;width:29.5%;height:12.5%;z-index:8;background:radial-gradient(ellipse at center,rgba(4,18,28,.97),rgba(4,18,28,.88) 68%,transparent)}.count{position:absolute;left:68.5%;top:25.8%;width:27%;height:10.8%;z-index:9;color:#f4eee7;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}.ato{font-size:clamp(10px,3vw,15px);margin-left:2px;margin-bottom:2px}.dayline{display:flex;align-items:flex-end;gap:6px;white-space:nowrap;width:100%}.days{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(56px,16.5vw,88px);line-height:.78;letter-spacing:-.05em}.unit{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(10px,2.8vw,15px);line-height:1;margin-bottom:7px;letter-spacing:.06em}
+.catchMask{position:absolute;left:9.7%;top:25%;width:47%;height:6.5%;z-index:8;background:linear-gradient(90deg,rgba(4,18,28,.98),rgba(4,18,28,.88) 78%,transparent)}.catch{position:absolute;left:10.2%;top:26.1%;z-index:9;color:#f1eee9;font-size:clamp(11px,3.35vw,16px);font-weight:700;letter-spacing:.04em;white-space:nowrap}
+.latestMask{position:absolute;left:10%;top:64.3%;width:85%;height:10.5%;z-index:10;background:#8f251f}.latest{position:absolute;left:12%;top:65%;width:81%;height:8.8%;z-index:11;color:#f3ede5}.lt{display:flex;justify-content:space-between;font-size:clamp(6px,1.9vw,9px);font-weight:800}.ln{font-size:clamp(9px,2.8vw,13px);font-weight:900;margin-top:5px}.lc{font-size:clamp(18px,5.5vw,29px);font-weight:700;line-height:1.08;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.listMask{position:absolute;left:10%;top:76%;width:85%;height:14.6%;z-index:10;background:#02080d}.list{position:absolute;left:10.5%;top:76.15%;width:84%;height:14.3%;z-index:11;color:#eee}.row{height:33.33%;display:grid;grid-template-columns:12% 27% 1fr;align-items:center;border-top:1px solid #5556;gap:5px}.idx{font-family:Impact,sans-serif;font-size:clamp(19px,6vw,31px);color:#c5362b;text-align:center}.name{font-size:clamp(7px,2.2vw,10px);font-weight:800;line-height:1.25}.text{font-size:clamp(7px,2.3vw,10px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.historyBtn{position:absolute;right:5.5%;top:74.7%;z-index:15;background:transparent;color:#e53b31;border:0;font-weight:900;font-size:clamp(8px,2.5vw,12px);letter-spacing:.04em;padding:6px}
+.formMask{position:absolute;left:10%;top:91.5%;width:85%;height:6.5%;z-index:10;background:#07131b}.form{position:absolute;left:20.5%;top:92%;width:72.2%;height:5.2%;z-index:11;display:grid;grid-template-columns:51% 31% 16%;gap:1%}textarea,input{width:100%;height:100%;resize:none;border:1px solid #777;background:#0d1b24;color:#eee;padding:7px;font-size:clamp(8px,2.4vw,11px)}button{border:0;background:#b93329;color:#fff;font-weight:900;font-size:clamp(8px,2.5vw,12px)}
+.modal{position:fixed;inset:0;z-index:100;background:rgba(0,5,9,.94);display:none;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.panel{width:min(100%,430px);max-height:82vh;background:#07131b;border:1px solid #9c3029;color:#eee;overflow:hidden;box-shadow:0 0 40px #000}.panelHead{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid #6b2522}.panelHead b{font-family:Impact,"Arial Black",sans-serif;letter-spacing:.08em;font-size:22px}.close{background:none;color:#eee;font-size:24px;padding:0 8px}.history{max-height:68vh;overflow:auto;padding:0 16px}.hrow{padding:16px 0;border-bottom:1px solid #ffffff22}.hmeta{display:flex;justify-content:space-between;color:#c94a40;font-size:11px;font-weight:900;margin-bottom:7px}.htext{font-size:15px;line-height:1.55}
+@media(max-width:360px){.girlFloat{background-size:360px 540px}.catch{font-size:11px}}
+</style></head><body>
+<div class="app"><div class="poster"><div class="girlFloat"></div><div class="catchMask"></div><div class="catch">あなたに会うその日まで</div><div class="countMask"></div><div class="count"><div class="ato">あと</div><div class="dayline"><div id="days" class="days">---</div><div class="unit">DAYS</div></div></div><div class="latestMask"></div><div class="latest"><div class="lt"><span>LATEST COMMENT</span><span id="time">LATEST</span></div><div id="lname" class="ln">FROM RIKU（パパ）</div><div id="ltext" class="lc">あなたに会うその日まで</div></div><div class="listMask"></div><div id="list" class="list"></div><button id="historyBtn" class="historyBtn">VIEW ALL ↗</button><div class="formMask"></div><div class="form"><textarea id="comment" placeholder="コメントを入力"></textarea><input id="name" placeholder="お名前"><button id="post">POST →</button></div></div></div>
+<div id="modal" class="modal"><div class="panel"><div class="panelHead"><b>ALL COMMENTS</b><button id="close" class="close">×</button></div><div id="history" class="history"></div></div></div>
 <script>
-const $=x=>document.getElementById(x), due=new Date("2026-11-26T00:00:00+09:00");
-function tick(){const d=due-new Date();$("days").textContent=d<=0?0:Math.ceil(d/86400000)}
-tick(); setInterval(tick,60000);
-
-let cs=JSON.parse(localStorage.getItem("peppe_adjusted_comments")||"null")||[
- {name:"RIKU（パパ）",text:"ようこそ、ペッペ。",time:""},
- {name:"MOMOKA（ママ）",text:"今日も元気にお腹の中にいてくれてありがとう♡",time:""},
- {name:"おばあちゃん",text:"早く抱っこしたいなぁ〜楽しみにしてるよ〜！",time:""}
-];
-const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function render(){
- const c=cs[0];
- $("lname").textContent="FROM "+c.name;
- $("ltext").textContent=c.text;
- $("time").textContent=c.time||"LATEST";
- $("list").innerHTML=cs.slice(0,3).map((c,i)=>`<div class="row"><div class="idx">${String(i+1).padStart(2,"0")}</div><div class="name">FROM<br>${esc(c.name)}</div><div class="text">${esc(c.text)}</div></div>`).join("");
-}
-$("post").onclick=()=>{
- const name=$("name").value.trim()||"FAMILY", text=$("comment").value.trim();
- if(!text)return;
- const time=new Date().toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
- cs.unshift({name,text,time}); cs=cs.slice(0,50);
- localStorage.setItem("peppe_adjusted_comments",JSON.stringify(cs));
- $("name").value=""; $("comment").value=""; render();
-};
-render();
-</script>
-</body></html>
+const $=x=>document.getElementById(x),due=new Date('2026-11-26T00:00:00+09:00');function tick(){const d=due-new Date();$('days').textContent=d<=0?0:Math.ceil(d/86400000)}tick();setInterval(tick,60000);
+let cs=JSON.parse(localStorage.getItem('peppe_adjusted_comments')||'null')||[{name:'RIKU（パパ）',text:'あなたに会うその日まで',time:''},{name:'MOMOKA（ママ）',text:'今日も元気にお腹の中にいてくれてありがとう♡',time:''},{name:'おばあちゃん',text:'早く抱っこしたいなぁ〜楽しみにしてるよ〜！',time:''}];const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function render(){const c=cs[0];$('lname').textContent='FROM '+c.name;$('ltext').textContent=c.text;$('time').textContent=c.time||'LATEST';$('list').innerHTML=cs.slice(0,3).map((c,i)=>`<div class="row"><div class="idx">${String(i+1).padStart(2,'0')}</div><div class="name">FROM<br>${esc(c.name)}</div><div class="text">${esc(c.text)}</div></div>`).join('');$('history').innerHTML=cs.map((c,i)=>`<div class="hrow"><div class="hmeta"><span>${String(i+1).padStart(2,'0')} / ${esc(c.name)}</span><span>${esc(c.time||'')}</span></div><div class="htext">${esc(c.text)}</div></div>`).join('')}
+$('post').onclick=()=>{const name=$('name').value.trim()||'FAMILY',text=$('comment').value.trim();if(!text)return;const time=new Date().toLocaleString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});cs.unshift({name,text,time});cs=cs.slice(0,100);localStorage.setItem('peppe_adjusted_comments',JSON.stringify(cs));$('name').value='';$('comment').value='';render()};$('historyBtn').onclick=()=>$('modal').classList.add('open');$('close').onclick=()=>$('modal').classList.remove('open');$('modal').onclick=e=>{if(e.target===$('modal'))$('modal').classList.remove('open')};render();
+</script></body></html>
